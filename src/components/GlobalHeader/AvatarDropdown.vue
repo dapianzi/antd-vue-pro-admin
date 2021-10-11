@@ -29,6 +29,7 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AvatarDropdown',
@@ -56,6 +57,7 @@ export default {
         onOk: () => {
           return new Promise((resolve, reject) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1500)
+
           }).catch(() => console.log('Oops errors!'))
         },
         onCancel () {}

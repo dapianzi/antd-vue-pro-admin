@@ -108,12 +108,12 @@
       <!--      </div>-->
     </a-form>
 
-    <two-step-captcha
-      v-if="requiredTwoStepCaptcha"
-      :visible="stepCaptchaVisible"
-      @success="stepCaptchaSuccess"
-      @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
+    <!--    <two-step-captcha-->
+    <!--      v-if="requiredTwoStepCaptcha"-->
+    <!--      :visible="stepCaptchaVisible"-->
+    <!--      @success="stepCaptchaSuccess"-->
+    <!--      @cancel="stepCaptchaCancel"-->
+    <!--    ></two-step-captcha>-->
   </div>
 </template>
 
@@ -135,8 +135,8 @@
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
         isLoginError: false,
-        requiredTwoStepCaptcha: false,
-        stepCaptchaVisible: false,
+        // requiredTwoStepCaptcha: false,
+        // stepCaptchaVisible: false,
         form: this.$form.createForm(this),
         state: {
           time: 60,
