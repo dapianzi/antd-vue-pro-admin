@@ -13,7 +13,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
 const whiteList = ['login'] // no redirect whitelist
 const loginRoutePath = '/user/login'
-const defaultRoutePath = '/dashboard/workplace'
+const defaultRoutePath = '/dashboard/welcome'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -25,19 +25,20 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       // check login user.roles is null
-      if (store.getters.roles.length === 0) {
+      if (!store.getters.userInfo.name) {
         // request login userInfo
         store
           .dispatch('GetInfo')
           .then(res => {
-            const roles = res.result && res.result.role
+            const result = res.result
             // generate dynamic router
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            store.dispatch('GenerateRoutes', { result }).then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
+
               if (to.path === redirect) {
                 // set the replace: true so the navigation will not leave a history record
                 next({ ...to, replace: true })
@@ -47,7 +48,8 @@ router.beforeEach((to, from, next) => {
               }
             })
           })
-          .catch(() => {
+          .catch((e) => {
+            console.error(e)
             notification.error({
               message: '错误',
               description: '请求用户信息失败，请重试'

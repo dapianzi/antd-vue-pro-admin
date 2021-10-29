@@ -18,22 +18,23 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <div style="margin: -24px -24px 24px -24px; position: relative; line-height: 40px; height:40px; background: #F2F2F2">
-      <a-tabs v-model="activeKey" hide-add type="editable-card" @edit="handleMenuEvent" @tabClick="handleMenuEvent">
-        <a-tab-pane v-for="tab in tabs" :key="tab.path" :closable="tabs.length > 1">
-          <a-dropdown slot="tab" :trigger="['contextmenu']">
-            <span :style="{ userSelect: 'none' }">{{ resolveTabTitle(tab) }}</span>
-            <a-menu slot="overlay" @click="handleMenuEvent(tab.path, $event.key)">
-              <a-menu-item key="closeThat">关闭其他</a-menu-item>
-              <a-menu-item key="closeRight">关闭右侧</a-menu-item>
-              <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </a-tab-pane>
-      </a-tabs>
-    </div>
+    <!--    <multi-tab></multi-tab>-->
+    <!--    <div style="margin: -24px -24px 24px -24px; position: relative; line-height: 40px; height:40px; background: #F2F2F2">-->
+    <!--      <a-tabs v-model="activeKey" hide-add type="editable-card" @edit="handleMenuEvent" @tabClick="handleMenuEvent">-->
+    <!--        <a-tab-pane v-for="tab in tabs" :key="tab.path" :closable="tabs.length > 1">-->
+    <!--          <a-dropdown slot="tab" :trigger="['contextmenu']">-->
+    <!--            <span :style="{ userSelect: 'none' }">{{ resolveTabTitle(tab) }}</span>-->
+    <!--            <a-menu slot="overlay" @click="handleMenuEvent(tab.path, $event.key)">-->
+    <!--              <a-menu-item key="closeThat">关闭其他</a-menu-item>-->
+    <!--              <a-menu-item key="closeRight">关闭右侧</a-menu-item>-->
+    <!--              <a-menu-item key="closeLeft">关闭左侧</a-menu-item>-->
+    <!--            </a-menu>-->
+    <!--          </a-dropdown>-->
+    <!--        </a-tab-pane>-->
+    <!--      </a-tabs>-->
+    <!--    </div>-->
     <keep-alive>
-      <router-view />
+      <router-view :key="$route.fullpath" />
     </keep-alive>
   </pro-layout>
 </template>
@@ -91,7 +92,8 @@ export default {
     ...mapState({
       // 动态主路由
       mainMenu: state => state.permission.addRouters,
-      tabs: state => state.app.tabs
+      tabs: state => state.app.tabs,
+      token: state => state.user.token
     }),
     ...mapGetters(['resolveTabIdx'])
   },
@@ -105,9 +107,11 @@ export default {
     this.$watch('isMobile', () => {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
     })
-    this.$store.dispatch('initTabs').then(() => {
-      console.log('tabs init ok')
-    })
+    // this.$store.dispatch('initTabs').then(() => {
+    //   console.log('tabs init ok')
+    // })
+    this.$store.dispatch('initTags')
+    // this.$store.dispatch('initCategory')
   },
   updated () {
     const { name, meta, fullPath } = this.$route
@@ -130,7 +134,6 @@ export default {
         }, 16)
       })
     }
-
     // first update color
     updateTheme(this.settings.primaryColor)
     // first time mounted
@@ -164,7 +167,6 @@ export default {
       this.collapsed = val
     },
     handleSettingChange ({ type, value }) {
-      console.log('type', type, value)
       type && (this.settings[type] = value)
       switch (type) {
         case 'contentWidth':
@@ -225,7 +227,7 @@ export default {
       }
     },
     resolveTabTitle (tab) {
-      return i18nRender(tab.title) + tab.name
+      return i18nRender(tab.title)
     }
   }
 }

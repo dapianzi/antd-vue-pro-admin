@@ -12,6 +12,9 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
+// article
+export const SET_TAGS = 'article_set_tags'
+export const SET_CATEGORY = 'article_set_category'
 
 export const CONTENT_WIDTH_TYPE = {
   Fluid: 'Fluid',

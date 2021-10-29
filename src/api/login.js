@@ -9,8 +9,8 @@ const userApi = {
   // SendSms: '/account/sms',
   // SendSmsErr: '/account/sms_err',
   // get my info
-  UserInfo: '/user/info',
-  UserMenu: '/user/nav'
+  UserInfo: '/auth/user',
+  UserMenu: '/auth/user-nav'
 }
 
 /**
@@ -50,8 +50,7 @@ export function getInfo () {
   })
 }
 
-export function getCurrentUserNav (token) {
-  console.log(token)
+export function getCurrentUserNav () {
   return request({
     url: userApi.UserMenu,
     method: 'get'

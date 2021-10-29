@@ -2,7 +2,6 @@ import Mock from 'mockjs2'
 import { builder } from '../util'
 
 const info = (options) => {
-  console.log('options', options)
   const userInfo = {
     'id': '4291d7da9005377ec9aec4a71ea837f',
     'name': '天野远子',
@@ -759,10 +758,42 @@ const userNav = (options) => {
         'show': false
       },
       'component': 'NotificationSettings'
+    },
+    {
+      'name': '文章随笔',
+      'path': '/article',
+      'parentId': 0,
+      'id': 10040,
+      'redirect': '/article/edit',
+      'component': 'RouteView',
+      'meta': { 'title': '文章随笔', 'show': true }
+    },
+    {
+      'path': '/article/edit',
+      'name': 'ArticleEdit',
+      'parentId': 10040,
+      'id': 10041,
+      'component': 'ArticleEdit',
+      'meta': { 'title': '写点什么', 'show': true }
+    },
+    {
+      'path': '/article/list',
+      'name': 'ArticleList',
+      'parentId': 10040,
+      'id': 10042,
+      'component': 'ArticleList',
+      'meta': { 'title': '历史发布', 'show': true }
+    },
+    {
+      'path': '/article/tags',
+      'name': 'ArticleTags',
+      'parentId': 10040,
+      'id': 10043,
+      'component': 'ArticleTags',
+      'meta': { 'title': '标签管理', 'show': true }
     }
   ]
   const json = builder(nav)
-  console.log('json', json)
   return json
 }
 

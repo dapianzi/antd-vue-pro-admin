@@ -15,44 +15,14 @@ const constantRouterComponents = {
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
 
   // 你需要动态引入的页面组件
-  'Workplace': () => import('@/views/dashboard/Welcome'),
+  'Welcome': () => import('@/views/dashboard/Welcome'),
   'Analysis': () => import('@/views/dashboard/Analysis'),
 
-  // form
-  'BasicForm': () => import('@/views/form/BasicForm'),
-  'StepForm': () => import('@/views/form/stepForm/StepForm'),
-  'AdvanceForm': () => import('@/views/form/advancedForm/AdvancedForm'),
-
-  // list
-  'TableList': () => import('@/views/list/TableList'),
-  'StandardList': () => import('@/views/list/StandardList'),
-  'CardList': () => import('@/views/list/CardList'),
-  'SearchLayout': () => import('@/views/list/search/SearchLayout'),
-  'SearchArticles': () => import('@/views/list/search/Article'),
-  'SearchProjects': () => import('@/views/list/search/Projects'),
-  'SearchApplications': () => import('@/views/list/search/Applications'),
-  'ProfileBasic': () => import('@/views/profile/basic/Index'),
-  'ProfileAdvanced': () => import('@/views/profile/advanced/Advanced'),
-
-  // result
-  'ResultSuccess': () => import(/* webpackChunkName: "result" */ '@/views/result/Success'),
-  'ResultFail': () => import(/* webpackChunkName: "result" */ '@/views/result/Error'),
-
-  // exception
-  'Exception403': () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-  'Exception404': () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
-  'Exception500': () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
-
-  // account
-  'AccountCenter': () => import('@/views/account/center/Index'),
-  'AccountSettings': () => import('@/views/account/settings/Index'),
-  'BaseSettings': () => import('@/views/account/settings/BaseSetting'),
-  'SecuritySettings': () => import('@/views/account/settings/Security'),
-  'CustomSettings': () => import('@/views/account/settings/Custom'),
-  'BindingSettings': () => import('@/views/account/settings/Binding'),
-  'NotificationSettings': () => import('@/views/account/settings/Notification'),
-
-  'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
+  // post
+  'ArticleEdit': () => import('@/views/article/ArticleEdit'),
+  'ArticleList': () => import('@/views/article/ArticleList'),
+  'ArticleNew': () => import('@/views/article/ArticleNew'),
+  'ArticleTags': () => import('@/views/article/ArticleTags')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -81,7 +51,6 @@ const rootRouter = {
 export const generatorDynamicRouter = (token) => {
   return new Promise((resolve, reject) => {
     loginService.getCurrentUserNav(token).then(res => {
-      console.log('res', res)
       const { result } = res
       const menuNav = []
       const childrenNav = []
@@ -89,10 +58,8 @@ export const generatorDynamicRouter = (token) => {
       listToTree(result, childrenNav, 0)
       rootRouter.children = childrenNav
       menuNav.push(rootRouter)
-      console.log('menuNav', menuNav)
       const routers = generator(menuNav)
       routers.push(notFoundRouter)
-      console.log('routers', routers)
       resolve(routers)
     }).catch(err => {
       reject(err)

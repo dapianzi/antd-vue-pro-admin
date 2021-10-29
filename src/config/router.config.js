@@ -21,11 +21,12 @@ export const asyncRouterMap = [
         path: '/dashboard',
         name: 'dashboard',
         component: RouteView,
+        redirect: '/dashboard/welcome',
         meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
         children: [
           {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
+            path: '/dashboard/welcome',
+            name: 'Welcome',
             component: () => import('@/views/dashboard/Welcome'),
             meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: [ 'dashboard' ] }
           },
@@ -37,59 +38,37 @@ export const asyncRouterMap = [
           }
         ]
       },
-
-      // forms
-      // {
-      //   path: '/form',
-      //   redirect: '/form/base-form',
-      //   component: RouteView,
-      //   meta: { title: '表单页', icon: 'form', permission: [ 'form' ] },
-      //   children: [
-      //     {
-      //       path: '/form/base-form',
-      //       name: 'BaseForm',
-      //       component: () => import('@/views/form/basicForm'),
-      //       meta: { title: '基础表单', keepAlive: true, permission: [ 'form' ] }
-      //     },
-      //     {
-      //       path: '/form/step-form',
-      //       name: 'StepForm',
-      //       component: () => import('@/views/form/stepForm/StepForm'),
-      //       meta: { title: '分步表单', keepAlive: true, permission: [ 'form' ] }
-      //     },
-      //     {
-      //       path: '/form/advanced-form',
-      //       name: 'AdvanceForm',
-      //       component: () => import('@/views/form/advancedForm/AdvancedForm'),
-      //       meta: { title: '高级表单', keepAlive: true, permission: [ 'form' ] }
-      //     }
-      //   ]
-      // },
-
-      // forms
       {
         path: '/article',
-        redirect: '/article/edit',
+        name: 'article',
+        redirect: '/article/new',
         component: RouteView,
-        meta: { title: '文章随笔', icon: 'article', permission: [ 'article' ] },
+        meta: { title: 'menu.article', icon: 'article', permission: [ 'article' ] },
         children: [
           {
-            path: '/article/edit',
-            name: 'ArticleEdit',
-            component: () => import('@/views/article/ArticleEdit'),
-            meta: { title: '写点什么', keepAlive: true, permission: [ 'article' ] }
+            path: '/article/new',
+            name: 'ArticleNew',
+            component: () => import('@/views/article/ArticleNew'),
+            meta: { title: 'menu.article.new', keepAlive: false, permission: [ 'article' ] }
           },
           {
             path: '/article/articles',
             name: 'ArticleList',
             component: () => import('@/views/article/ArticleList'),
-            meta: { title: '历史发布', keepAlive: true, permission: [ 'article' ] }
+            meta: { title: 'menu.article.list', keepAlive: true, permission: [ 'article' ] }
+          },
+          {
+            path: '/article/edit/:id([1-9]\\d*)?',
+            name: 'ArticleEdit',
+            component: () => import('@/views/article/ArticleEdit'),
+            meta: { title: 'menu.article.edit', keepAlive: false, permission: [ 'article' ] },
+            hidden: true
           },
           {
             path: '/article/tags',
             name: 'ArticleTags',
             component: () => import('@/views/article/ArticleTags'),
-            meta: { title: '标签管理', keepAlive: true, permission: [ 'article' ] }
+            meta: { title: 'menu.article.tags', keepAlive: true, permission: [ 'article' ] }
           }
         ]
       }

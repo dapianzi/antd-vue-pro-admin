@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper content="">
-    <a-form ref="modify" @submit="validate" :form="form" class="form">
+    <a-form ref="create" @submit="validate" :form="form" class="form">
       <a-form-item
         :label="formLabel.title"
       >
@@ -80,7 +80,7 @@
   import FooterToolBar from '@/components/FooterToolbar'
   import { baseMixin } from '@/store/app-mixin'
   import { mapState, mapActions } from 'vuex'
-  import { modifyArticle, getArticle } from '@/api/article'
+  import { createArticle } from '@/api/article'
 
   const fieldLabels = {
     title: '标题',
@@ -92,14 +92,13 @@
   }
 
   export default {
-    name: 'ArticleEdit',
+    name: 'ArticleNew',
     mixins: [baseMixin],
     components: {
       FooterToolBar
     },
     data() {
       return {
-        id: 0,
         form: this.$form.createForm(this),
         formLabel: fieldLabels,
         loading: false,
@@ -109,16 +108,6 @@
         tagChecked: [],
         errors: []
       }
-    },
-    mounted() {
-      this.id = this.$route.params.id
-      getArticle(this.id).then(res => {
-        this.form.setFields({
-          title: { value: res.result.title },
-          content: { value: res.result.content }
-        })
-        this.tagChecked = Object.fromEntries(Array.from(res.result.tags, i => [i.id, true]))
-      })
     },
     computed: {
       ...mapState({
@@ -138,9 +127,8 @@
           ...this.form.getFieldsValue(),
           tags: checked.join(',')
         }
-        modifyArticle(this.id, data).then((res) => {
-          console.log(res)
-          alert('ok')
+        createArticle(data).then((res) => {
+          this.$router.push({ name: 'ArticleList' })
         }).catch(e => {
           alert(e.error)
         })
@@ -170,12 +158,12 @@
       },
       // 最终全页面提交
       validate() {
-        const { $refs: { modify }, $notification } = this
-        modify.form.validateFields((err, values) => {
+        const { $refs: { create }, $notification } = this
+        create.form.validateFields((err, values) => {
           // clean this.errors
           this.errors = []
           if (err) {
-            const errors = Object.assign({}, modify.form.getFieldsError())
+            const errors = Object.assign({}, create.form.getFieldsError())
             const tmp = { ...errors }
             this.errorList(tmp)
             return

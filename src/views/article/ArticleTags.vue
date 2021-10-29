@@ -1,105 +1,78 @@
 <template>
-  <a-form @submit="handleSubmit" :form="form" class="form">
-    <a-row class="form-row" :gutter="16">
-      <a-col :lg="6" :md="12" :sm="24">
-        <a-form-item
-          label="任务名">
-          <a-input placeholder="请输入任务名称" v-decorator="[ 'name2', {rules: [{ required: true, message: '请输入任务名称', whitespace: true}]} ]" />
-        </a-form-item>
-      </a-col>
-      <a-col :xl="{span: 7, offset: 1}" :lg="{span: 8}" :md="{span: 12}" :sm="24">
-        <a-form-item
-          label="任务描述">
-          <a-input placeholder="请输入任务描述" v-decorator="[ 'url2', {rules: [{ required: true, message: '请输入任务描述', whitespace: true}]} ]" />
-        </a-form-item>
-      </a-col>
-      <a-col :xl="{span: 9, offset: 1}" :lg="{span: 10}" :md="{span: 24}" :sm="24">
-        <a-form-item
-          label="执行人">
-          <a-select
-            placeholder="请选择执行人"
-            v-decorator="[
-              'owner2',
-              {rules: [{ required: true, message: '请选择执行人'}]}
-            ]" >
-            <a-select-option value="黄丽丽">黄丽丽</a-select-option>
-            <a-select-option value="李大刀">李大刀</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-    <a-row class="form-row" :gutter="16">
-      <a-col :lg="6" :md="12" :sm="24">
-        <a-form-item
-          label="责任人">
-          <a-select
-            placeholder="请选择责任人"
-            v-decorator="[
-              'approver2',
-              {rules: [{ required: true, message: '请选择责任人'}]}
-            ]" >
-            <a-select-option value="王伟">王伟</a-select-option>
-            <a-select-option value="李红军">李红军</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-      <a-col :xl="{span: 7, offset: 1}" :lg="{span: 8}" :md="{span: 12}" :sm="24">
-        <a-form-item
-          label="提醒时间">
-          <a-time-picker
-            style="width: 100%"
-            v-decorator="[
-              'dateRange2',
-              {rules: [{ required: true, message: '请选择提醒时间'}]}
-            ]" />
-        </a-form-item>
-      </a-col>
-      <a-col :xl="{span: 9, offset: 1}" :lg="{span: 10}" :md="{span: 24}" :sm="24">
-        <a-form-item
-          label="任务类型">
-          <a-select
-            placeholder="请选择任务类型"
-            v-decorator="[ 'type2', {rules: [{ required: true, message: '请选择任务类型'}]} ]" >
-            <a-select-option value="定时执行">定时执行</a-select-option>
-            <a-select-option value="周期执行">周期执行</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-    <a-form-item v-if="showSubmit">
-      <a-button htmlType="submit" >Submit</a-button>
-    </a-form-item>
-  </a-form>
+  <page-header-wrapper content="文章标签">
+    <!--    <a-list item-layout="vertical" :data-source="showArticles" size="large"-->
+    <!--            :pagination="{showQuickJumper: true, current: page, pageSize: pageSize, total: total, onChange: onChange}">-->
+    <!--      <div slot="footer">-->
+    <!--        footer part-->
+    <!--      </div>-->
+    <!--      <a-list-item slot="renderItem" slot-scope="item">-->
+    <!--        &lt;!&ndash;        <template slot="actions">&ndash;&gt;-->
+    <!--        &lt;!&ndash;          <span><a-icon type="star-o" class="mr-2"></a-icon>14</span>&ndash;&gt;-->
+    <!--        &lt;!&ndash;          <span><a-icon type="like-o" class="mr-2"></a-icon>30</span>&ndash;&gt;-->
+    <!--        &lt;!&ndash;          <span><a-icon type="message" class="mr-2"></a-icon>2</span>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </template>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        <img v-if="!!item.cover" slot="extra" width="272" alt="cover" :src="item.cover"/>&ndash;&gt;-->
+    <!--        <a-list-item-meta-->
+    <!--          :description="item.description"-->
+    <!--        >-->
+    <!--          <a slot="title" :href="'/article/edit/'+item.id">{{ item.title }}</a>-->
+    <!--          &lt;!&ndash;          <a-avatar slot="avatar" :src="item.avatar"/>&ndash;&gt;-->
+    <!--        </a-list-item-meta>-->
+    <!--        {{ item.content }}-->
+    <!--      </a-list-item>-->
+    <!--    </a-list>-->
+    <a-table :columns="columns" :data-source="tags" rowKey="id">
+    </a-table>
+  </page-header-wrapper>
 </template>
 
 <script>
-export default {
-  name: 'TaskForm',
-  props: {
-    showSubmit: {
-      type: Boolean,
-      default: false
+  import { mapState } from 'vuex'
+
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id'
+    },
+    {
+      title: 'name',
+      dataIndex: 'name',
+      key: 'name'
     }
-  },
-  data () {
-    return {
-      form: this.$form.createForm(this)
-    }
-  },
-  methods: {
-    handleSubmit (e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.$notification['error']({
-            message: 'Received values of form:',
-            description: values
-          })
-        }
+  ]
+  export default {
+    name: 'ArticleTags',
+    props: {
+      showSubmit: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data() {
+      return {
+        columns
+      }
+    },
+    computed: {
+      ...mapState({
+        tags: state => state.article.tags
       })
+    },
+    methods: {
+      handleSubmit(e) {
+        e.preventDefault()
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            this.$notification['error']({
+              message: 'Received values of form:',
+              description: values
+            })
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
