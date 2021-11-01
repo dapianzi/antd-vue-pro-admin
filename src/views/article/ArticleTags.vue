@@ -39,6 +39,11 @@
       title: 'name',
       dataIndex: 'name',
       key: 'name'
+    },
+    {
+      title: 'count',
+      dataIndex: 'count',
+      key: 'count'
     }
   ]
   export default {

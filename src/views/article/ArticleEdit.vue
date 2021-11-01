@@ -140,9 +140,9 @@
         }
         modifyArticle(this.id, data).then((res) => {
           console.log(res)
-          alert('ok')
+          this.$router.go(0)
         }).catch(e => {
-          alert(e.error)
+          alert(e.error || e)
         })
       },
       handleToggleTag(checked, key) {
